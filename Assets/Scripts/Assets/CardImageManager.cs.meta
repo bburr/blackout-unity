@@ -1,0 +1,66 @@
+fileFormatVersion: 2
+guid: 62a3a5c770f3c1140b69f1f6ec0a9e32
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - club01: {instanceID: 0}
+  - club02: {instanceID: 0}
+  - club03: {instanceID: 0}
+  - club04: {instanceID: 0}
+  - club05: {instanceID: 0}
+  - club06: {instanceID: 0}
+  - club07: {instanceID: 0}
+  - club08: {instanceID: 0}
+  - club09: {instanceID: 0}
+  - club10: {instanceID: 0}
+  - club11: {instanceID: 0}
+  - club12: {instanceID: 0}
+  - club13: {instanceID: 0}
+  - diamond01: {instanceID: 0}
+  - diamond02: {instanceID: 0}
+  - diamond03: {instanceID: 0}
+  - diamond04: {instanceID: 0}
+  - diamond05: {instanceID: 0}
+  - diamond06: {instanceID: 0}
+  - diamond07: {instanceID: 0}
+  - diamond08: {instanceID: 0}
+  - diamond09: {instanceID: 0}
+  - diamond10: {instanceID: 0}
+  - diamond11: {instanceID: 0}
+  - diamond12: {instanceID: 0}
+  - diamond13: {instanceID: 0}
+  - heart01: {instanceID: 0}
+  - heart02: {instanceID: 0}
+  - heart03: {instanceID: 0}
+  - heart04: {instanceID: 0}
+  - heart05: {instanceID: 0}
+  - heart06: {instanceID: 0}
+  - heart07: {instanceID: 0}
+  - heart08: {instanceID: 0}
+  - heart09: {instanceID: 0}
+  - heart10: {instanceID: 0}
+  - heart11: {instanceID: 0}
+  - heart12: {instanceID: 0}
+  - heart13: {instanceID: 0}
+  - spade01: {instanceID: 0}
+  - spade02: {instanceID: 0}
+  - spade03: {instanceID: 0}
+  - spade04: {instanceID: 0}
+  - spade05: {instanceID: 0}
+  - spade06: {instanceID: 0}
+  - spade07: {instanceID: 0}
+  - spade08: {instanceID: 0}
+  - spade09: {instanceID: 0}
+  - spade10: {instanceID: 0}
+  - spade11: {instanceID: 0}
+  - spade12: {instanceID: 0}
+  - spade13: {instanceID: 0}
+  - cardback01: {instanceID: 0}
+  - cardback02: {instanceID: 0}
+  - cardback03: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
