@@ -14,7 +14,7 @@ public class InLobbyUserUI : UIPanelBase
         Debug.Log($"Set User: {localPlayer.ID.Value}");
         Show();
         _localPlayer = localPlayer;
-        UserId = localPlayer.ID.Value;
+        UserId = $"Player {localPlayer.Index.Value}";
         displayNameText.SetText(UserId);
     }
 

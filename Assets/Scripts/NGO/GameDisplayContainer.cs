@@ -26,10 +26,7 @@ public class GameDisplayContainer : MonoBehaviour
             trumpCard.SetActive(false);
         }
         
-        for (var i = playedCards.transform.childCount - 1; i >= 0; i--)
-        {
-            Destroy(playedCards.transform.GetChild(i).gameObject);
-        }
+        ClearPlayedCards();
         
         // todo display in order of play?
         foreach (var card in roundState.CurrentTrick.PlayedCards)
@@ -41,6 +38,14 @@ public class GameDisplayContainer : MonoBehaviour
             
             var cardInHand = Instantiate(cardPrefab, playedCards.transform);
             cardInHand.GetComponentInChildren<CardDisplayController>().CardState = card;
+        }
+    }
+
+    public void ClearPlayedCards()
+    {
+        for (var i = playedCards.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(playedCards.transform.GetChild(i).gameObject);
         }
     }
     
@@ -59,6 +64,8 @@ public class GameDisplayContainer : MonoBehaviour
         {
             EnableEndOfRoundModal();
         }
+        
+        // todo wait to enable cards until here or CloseEndOfRoundUI if waiting
     }
 
     public void EnableEndOfRoundModal(bool value = true)
@@ -67,15 +74,22 @@ public class GameDisplayContainer : MonoBehaviour
         _isRoundModalWaiting = false;
     }
 
-    public void InitEndOfRoundUI(RoundState roundState)
+    public void InitEndOfRoundUI(RoundScoreState roundScoreState)
     {
-        // todo
+        endOfRoundModalUI.RoundScore = roundScoreState;
         _isRoundModalWaiting = true;
     }
 
     public void CloseEndOfRoundUI()
     {
         endOfRoundModalUI.gameObject.SetActive(false);
+
+        if (InGameRunner.Instance.GameHasEnded)
+        {
+            GetComponentInChildren<ScorePanelUI>().Show();
+            return;
+        }
+        
         InGameRunner.Instance.LocalPlayerManager.EnableBettingView();
     }
 }

@@ -619,6 +619,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LobbyCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1552911417929519586, guid: bbe5e9419f2cb53439254b7bf56c92f4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1552911417929519587, guid: bbe5e9419f2cb53439254b7bf56c92f4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

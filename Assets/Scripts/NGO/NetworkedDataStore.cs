@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class NetworkedDataStore : NetworkBehaviour
 {
     public static NetworkedDataStore Instance;
 
+    public string[] PlayerNames => _playerNames;
+
+    private string[] _playerNames;
     private Dictionary<ulong, PlayerData> _playerData = new();
     private RoundState _roundState;
     private ulong _localId;
@@ -52,6 +57,19 @@ public class NetworkedDataStore : NetworkBehaviour
         }
         
         _clientIds = _playerData.Keys.ToArray();
+    }
+
+    public void InitPlayerNames()
+    {
+        Debug.Log("Init Player Names");
+        
+        // todo 
+        _playerNames = new string[GameManager.Instance.LocalLobby.PlayerCount];
+
+        for (var i = 0; i < _playerNames.Length; i++)
+        {
+            _playerNames[i] = $"Player {i}";
+        }
     }
     
     public void AddPlayer(ulong id, string name)

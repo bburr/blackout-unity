@@ -7,6 +7,7 @@ public class CardInHandUI : MonoBehaviour
     
     public void SelectCard()
     {
+        // todo disable invalid cards based on leading card?
         LocalPlayerManager.EnableCardsInHand(false);
         
         InGameRunner.Instance.PlayCard(GetComponentInChildren<CardDisplayController>().CardState);

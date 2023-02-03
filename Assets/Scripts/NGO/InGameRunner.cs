@@ -1,11 +1,8 @@
 ﻿
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,6 +19,10 @@ public class InGameRunner : NetworkBehaviour
 
     public PlayerData LocalUser => _localUserData;
     public int LocalPlayerIndex { get; set; }
+
+    public bool GameHasEnded { get; private set; }
+
+    public Action<RoundScoreState> OnRoundEnd;
 
     public PlayerManager LocalPlayerManager;
     public Action OnGameBeginning;
@@ -116,6 +117,7 @@ public class InGameRunner : NetworkBehaviour
 
         LocalPlayerManager = Instantiate(playerManagerPrefab);
         _gameDisplayContainerInstance = Instantiate(gameDisplayContainerPrefab);
+        dataStore.InitPlayerNames();
 
         if (IsServer)
         {
@@ -318,7 +320,6 @@ public class InGameRunner : NetworkBehaviour
             return;
         }
         
-        // todo on next trick, display who won previous trick and with which card?
         // check if we are at the end of a trick
         if (_currentRound.PlayerIndexToPlay < 0)
         {
@@ -358,7 +359,6 @@ public class InGameRunner : NetworkBehaviour
         
         dataStore.SetCurrentRound(_currentRound);
         
-        // todo send client rpc that trick is over, client side display end of trick ui
         EndOfTrick_ClientRpc(_currentRound.CompletedTricks[^1]);
 
         int DetermineTrickWinnerIndex()
@@ -395,6 +395,7 @@ public class InGameRunner : NetworkBehaviour
     private void EndOfTrick_ClientRpc(TrickState trickState)
     {
         Debug.Log("EndOfTrick_ClientRpc");
+        _gameDisplayContainerInstance.ClearPlayedCards();
         _gameDisplayContainerInstance.DisplayEndOfTrickUI(trickState);
     }
 
@@ -404,17 +405,35 @@ public class InGameRunner : NetworkBehaviour
         {
             return;
         }
+
+        var scores = new int[RoundState.NumPlayers];
+        var tricksWonCounts = new int[RoundState.NumPlayers];
+
+        for (var i = 0; i < _currentRound.CompletedTricks.Length; i++)
+        {
+            tricksWonCounts[_currentRound.CompletedTricks[i].TrickWinnerIndex]++;
+        }
+
+        for (var i = 0; i < _currentRound.Bets.Length; i++)
+        {
+            // todo config for points
+            scores[i] = _currentRound.Bets[i] == tricksWonCounts[i] ? _currentRound.Bets[i] + 10 : 0;
+        }
+
+        var roundScore = new RoundScoreState
+        {
+            RoundNumber = _currentRound.RoundNumber, 
+            Scores = scores
+        };
         
-        // todo save round data
-        Debug.Log("Score Round");
-        
-        EndOfRound_ClientRpc(_currentRound);
+        EndOfRound_ClientRpc(roundScore);
     }
 
     [ClientRpc]
-    private void EndOfRound_ClientRpc(RoundState roundState)
+    private void EndOfRound_ClientRpc(RoundScoreState roundScoreState)
     {
-        _gameDisplayContainerInstance.InitEndOfRoundUI(roundState);
+        _gameDisplayContainerInstance.InitEndOfRoundUI(roundScoreState);
+        OnRoundEnd?.Invoke(roundScoreState);
     }
     
     private void NextRound()
@@ -441,9 +460,7 @@ public class InGameRunner : NetworkBehaviour
 
             if (numTricks < GetEndingNumTricks())
             {
-                // todo
-                Debug.Log("Last round has been completed");
-                // CompletedFinalRound();
+                EndOfGame_ClientRpc();
                 return;
             }
         }
@@ -453,7 +470,7 @@ public class InGameRunner : NetworkBehaviour
         // todo handle game settings properly
         int GetMaxNumTricks()
         {
-            return 3;
+            return 5;
         }
 
         int GetEndingNumTricks()
@@ -520,5 +537,12 @@ public class InGameRunner : NetworkBehaviour
             // todo game settings
             return true;
         }
+    }
+
+    [ClientRpc]
+    public void EndOfGame_ClientRpc()
+    {
+        // todo update this when returning to lobby
+        GameHasEnded = true;
     }
 }

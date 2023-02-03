@@ -1,16 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CardDisplayController : MonoBehaviour
 {
-    public CardState CardState { get; set; }
+    private CardState _cardState;
     
-    private void Start()
+    public CardState CardState
     {
-        Refresh();
+        get => _cardState;
+        set
+        {
+            _cardState = value;
+            Refresh();
+        }
     }
 
     public void Refresh()

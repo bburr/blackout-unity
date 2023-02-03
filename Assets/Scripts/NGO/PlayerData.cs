@@ -7,13 +7,7 @@ public class PlayerData : INetworkSerializable
     public string name;
     public ulong id;
 
-    // private string _hand = "";
-
     public CardState[] Hand = Array.Empty<CardState>();
-    // {
-        // get => StateConverter.DeserializeCardList(_hand);
-        // set => _hand = StateConverter.SerializeCardList(value);
-    // }
 
     public PlayerData()
     {
